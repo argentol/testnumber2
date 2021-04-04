@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeSystem: {fileID: 1105136080}
-  velocity: 10
+  velocity: 5
   rotationVelocity: 180
 --- !u!4 &445757956
 Transform:
@@ -635,8 +635,6 @@ GameObject:
   - component: {fileID: 988916288}
   - component: {fileID: 988916291}
   - component: {fileID: 988916290}
-  - component: {fileID: 988916292}
-  - component: {fileID: 988916293}
   m_Layer: 0
   m_Name: Pipe
   m_TagString: Untagged
@@ -656,10 +654,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e3433c691cc04659a6325c7e1ab4906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minCurveRadius: 4
-  maxCurveRadius: 20
-  minCurveSegmentCount: 5
-  maxCurveSegmentCount: 10
+  minCurveRadius_: 4
+  maxCurveRadius_: 20
+  minCurveSegmentCount_: 4
+  maxCurveSegmentCount_: 10
 --- !u!4 &988916289
 Transform:
   m_ObjectHideFlags: 0
@@ -721,36 +719,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 988916287}
   m_Mesh: {fileID: 0}
---- !u!64 &988916292
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 988916287}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
---- !u!54 &988916293
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 988916287}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &1105136079
 GameObject:
   m_ObjectHideFlags: 0
@@ -780,20 +748,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8118acb7df544ea785e385e75892074, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pipePrefab: {fileID: 988916288}
-  pipeCount: 21
-  Button1: {fileID: 1697662657}
-  Button2: {fileID: 622629813}
-  Button3: {fileID: 2056841722}
-  cheating: {fileID: 720966374}
-  Color1: {fileID: 2100000, guid: 5812b4fd9811b2841b053a53deb3eb9b, type: 2}
-  Color2: {fileID: 2100000, guid: a623e4a9d711330438c6980b45266c6e, type: 2}
-  Color3: {fileID: 2100000, guid: 7698cb1b8cae054458680ca108e9e796, type: 2}
-  Color1Button: {fileID: 2100000, guid: f14f488814de4ff408033642ee402c67, type: 2}
-  Color2Button: {fileID: 2100000, guid: 79c4d58a733530f4e816501905062258, type: 2}
-  Color3Button: {fileID: 2100000, guid: 6f53ac1db60a3944a8d4d786caec9296, type: 2}
-  Player: {fileID: 1955118749}
-  TextLose: {fileID: 255771760}
+  pipePrefab_: {fileID: 988916288}
+  colorObjectManager_: {fileID: 1659125469}
+  pipeCount_: 5
+  button1_: {fileID: 1697662657}
+  button2_: {fileID: 622629813}
+  button3_: {fileID: 2056841722}
+  color1_: {fileID: 2100000, guid: 5812b4fd9811b2841b053a53deb3eb9b, type: 2}
+  color2_: {fileID: 2100000, guid: a623e4a9d711330438c6980b45266c6e, type: 2}
+  color3_: {fileID: 2100000, guid: 7698cb1b8cae054458680ca108e9e796, type: 2}
+  color1Button_: {fileID: 2100000, guid: f14f488814de4ff408033642ee402c67, type: 2}
+  color2Button_: {fileID: 2100000, guid: 79c4d58a733530f4e816501905062258, type: 2}
+  color3Button_: {fileID: 2100000, guid: 6f53ac1db60a3944a8d4d786caec9296, type: 2}
+  player_: {fileID: 1955118749}
+  textLose_: {fileID: 255771760}
   StartOfGame: 0
 --- !u!4 &1105136081
 Transform:
@@ -1125,6 +1093,55 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &1659125468
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1659125470}
+  - component: {fileID: 1659125469}
+  m_Layer: 0
+  m_Name: ColorObjectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1659125469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659125468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4302635360740154aae0b0cb51c21142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pipeColor1_: {fileID: 0}
+  pipeColor2_: {fileID: 0}
+  pipeColor3_: {fileID: 0}
+  buttonColor1_: {fileID: 0}
+  buttonColor2_: {fileID: 0}
+  buttonColor3_: {fileID: 0}
+--- !u!4 &1659125470
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659125468}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1989911689}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1697662655
 GameObject:
   m_ObjectHideFlags: 0
@@ -1610,6 +1627,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1105136081}
+  - {fileID: 1659125470}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

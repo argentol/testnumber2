@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
 
@@ -24,12 +22,15 @@ public class Player : MonoBehaviour {
 		world = pipeSystem.transform.parent;
 		rotater = transform.GetChild(0);
 		currentPipe = pipeSystem.SetupFirstPipe();
+
 		SetupCurrentPipe();
 	}
 
-	private void Update () {
+	private void Update () 
+	{
 		float delta = velocity * Time.deltaTime;
 		distanceTraveled += delta;
+
 		systemRotation += delta * deltaToRotation;
 
 		if (systemRotation >= currentPipe.CurveAngle) {

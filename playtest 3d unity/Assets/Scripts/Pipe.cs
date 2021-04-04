@@ -4,22 +4,15 @@ public class Pipe : MonoBehaviour {
 
     #region Fields
 
-    private const float pipeRadius = 1.0f; // радиус внутри трубы
-	private const int pipeSegmentCount = 20; // кол-во сегментов, образующих тор
-	private const float ringDistance = 1.0f; // хз
+    private const float PipeRadius = 1.0f; // радиус внутри трубы
+	private const int PipeSegmentCount = 20; // кол-во сегментов, образующих тор
+	private const float RingDistance = 1.0f; // хз
 
-    /// <summary>
-	/// 
-	/// </summary>
-	public float minCurveRadius, maxCurveRadius; // радиус от центра тора до трубы
+	private int curveSegmentCount_;
 
+	public float minCurveRadius_, maxCurveRadius_; // радиус от центра тора до трубы
+	public int minCurveSegmentCount_, maxCurveSegmentCount_; // кол-во сегментов, которые возьмутся из тора
 
-	public int minCurveSegmentCount, maxCurveSegmentCount; // кол-во сегментов, которые возьмутся из тора
-
-	private int curveSegmentCount;
-
-	private Mesh mesh;
-	private int[] triangles;
 
     #endregion
 
@@ -33,64 +26,22 @@ public class Pipe : MonoBehaviour {
 
 	#endregion
 
-	#region Methods
+	#region Public Methods
 
-	#region Overrides
-
-	private void Awake()
+	public void InitializePipe(int white, bool startOfGame)
 	{
+		curveSegmentCount_ = CalculateCurveSegmentCount(white, startOfGame);
+		CurveRadius = CalculateCurveRadius(white, startOfGame);
+
+
 		var meshFilter = GetComponent<MeshFilter>();
-		mesh = new Mesh();
-		mesh.name = "Pipe";
-
-		meshFilter.mesh = mesh;
-	}
-
-	#endregion
-
-	#region  Custom Methods
-
-	public void Generate (int white, bool NewLevel, bool StartOfGame) {
-		if (StartOfGame && !NewLevel)
-		{
-			curveSegmentCount = maxCurveSegmentCount;
-			CurveRadius = Random.Range(minCurveRadius, maxCurveRadius);
-			NewLevel = false;
-		}
-		else
-		{
-			if (NewLevel)
-			{
-				curveSegmentCount = maxCurveSegmentCount;
-				CurveRadius = Random.Range(minCurveRadius, maxCurveRadius);
-				NewLevel = false;
-			}
-
-			else
-			{
-				if (white % 2 == 0)
-				{
-					curveSegmentCount = 1;
-					CurveRadius = Random.Range(minCurveRadius, maxCurveRadius);
-				}
-				else
-				{
-					CurveRadius = Random.Range(minCurveRadius, maxCurveRadius);
-					curveSegmentCount =
-						Random.Range(minCurveSegmentCount, maxCurveSegmentCount + 1);
-				}
-			}
-		}
-			mesh.Clear();
-			mesh.vertices = GetVertices();
-			SetTriangles();
-			mesh.RecalculateNormals();
+		meshFilter.mesh = CreateMesh();
 	}
 
 	public void AlignWith(Pipe pipe)
 	{
 		RelativeRotation =
-			Random.Range(0, curveSegmentCount) * 360f / pipeSegmentCount;
+			Random.Range(0, curveSegmentCount_) * 360f / PipeSegmentCount;
 
 		transform.SetParent(pipe.transform, false);
 		transform.localPosition = Vector3.zero;
@@ -102,27 +53,105 @@ public class Pipe : MonoBehaviour {
 		transform.localScale = Vector3.one;
 	}
 
-	private Vector3[] GetVertices () {
-		var vertices = new Vector3[pipeSegmentCount * curveSegmentCount * 4];
+	public void SetMaterialColor(Color color)
+    {
+		var material = GetComponent<Renderer>().material;
+		material.color = color;
+	}
 
-		float uStep = ringDistance / CurveRadius;
-		CurveAngle = uStep * curveSegmentCount * (360f / (2f * Mathf.PI));
+    #endregion
+
+    #region Non-Public Methods
+
+    private int CalculateCurveSegmentCount(int white, bool startOfGame)
+    {
+		int curveSegmentCount;
+		if (startOfGame)
+		{
+			curveSegmentCount = maxCurveSegmentCount_;
+		}
+		else
+		{
+			if (white % 2 == 0)
+			{
+				curveSegmentCount = 1;
+			}
+			else
+			{
+				curveSegmentCount = Random.Range(minCurveSegmentCount_, maxCurveSegmentCount_ + 1);
+			}
+		}
+
+		return curveSegmentCount;
+	}
+
+	private float CalculateCurveRadius(int white, bool startOfGame)
+	{
+		float curveRadius;
+
+		if (startOfGame)
+		{
+			curveRadius = Random.Range(minCurveRadius_, maxCurveRadius_);
+		}
+		else
+		{
+			if (white % 2 == 0)
+			{
+				curveRadius = Random.Range(minCurveRadius_, maxCurveRadius_);
+			}
+			else
+			{
+				curveRadius = Random.Range(minCurveRadius_, maxCurveRadius_);
+			}
+		}
+
+		return curveRadius;
+	}
+
+	private Mesh CreateMesh()
+    {
+		var mesh = new Mesh();
+		mesh.name = "Pipe";
+
+
+		mesh.Clear();
+		mesh.vertices = CalculateVertices();
+		mesh.triangles = CalculateTriangles();
+		mesh.RecalculateNormals();
+
+		return mesh;
+	}
+
+
+    #region Calculate Vertices
+
+    private Vector3[] CalculateVertices () 
+	{
+		var vertices = new Vector3[PipeSegmentCount * curveSegmentCount_ * 4];
+
+		float uStep = GetUStep();
+		CurveAngle = uStep * curveSegmentCount_ * (360f / (2f * Mathf.PI));
 
 		CreateFirstQuadRing(vertices, uStep);
-		int iDelta = pipeSegmentCount * 4;
-		for (int u = 2, i = iDelta; u <= curveSegmentCount; u++, i += iDelta) {
+		int iDelta = PipeSegmentCount * 4;
+		for (int u = 2, i = iDelta; u <= curveSegmentCount_; u++, i += iDelta) {
 			CreateQuadRing(vertices, u * uStep, i);
 		}
 
 		return vertices;
 	}
 
+	private float GetUStep()
+    {
+		return RingDistance / CurveRadius;
+	}
+
 	private void CreateFirstQuadRing (Vector3[] vertices, float u) {
-		float vStep = (2f * Mathf.PI) / pipeSegmentCount;
+		float vStep = (2f * Mathf.PI) / PipeSegmentCount;
 
 		Vector3 vertexA = GetPointOnTorus(0f, 0f);
 		Vector3 vertexB = GetPointOnTorus(u, 0f);
-		for (int v = 1, i = 0; v <= pipeSegmentCount; v++, i += 4) {
+		for (int v = 1, i = 0; v <= PipeSegmentCount; v++, i += 4) {
 			vertices[i] = vertexA;
 			vertices[i + 1] = vertexA = GetPointOnTorus(0f, v * vStep);
 			vertices[i + 2] = vertexB;
@@ -131,11 +160,11 @@ public class Pipe : MonoBehaviour {
 	}
 
 	private void CreateQuadRing (Vector3[] vertices, float u, int i) {
-		float vStep = (2f * Mathf.PI) / pipeSegmentCount;
-		int ringOffset = pipeSegmentCount * 4;
+		float vStep = (2f * Mathf.PI) / PipeSegmentCount;
+		int ringOffset = PipeSegmentCount * 4;
 
 		Vector3 vertex = GetPointOnTorus(u, 0f);
-		for (int v = 1; v <= pipeSegmentCount; v++, i += 4) {
+		for (int v = 1; v <= PipeSegmentCount; v++, i += 4) {
 			vertices[i] = vertices[i - ringOffset + 2];
 			vertices[i + 1] = vertices[i - ringOffset + 3];
 			vertices[i + 2] = vertex;
@@ -143,29 +172,31 @@ public class Pipe : MonoBehaviour {
 		}
 	}
 
-	private void SetTriangles () {
-		triangles = new int[pipeSegmentCount * curveSegmentCount * 6];
+    #endregion
+
+
+    private int[] CalculateTriangles ()
+	{
+		var triangles = new int[PipeSegmentCount * curveSegmentCount_ * 6];
+
 		for (int t = 0, i = 0; t < triangles.Length; t += 6, i += 4) {
 			triangles[t] = i;
 			triangles[t + 1] = triangles[t + 4] = i + 2;
 			triangles[t + 2] = triangles[t + 3] = i + 1;
 			triangles[t + 5] = i + 3;
 		}
-		mesh.triangles = triangles;
+
+		return triangles;
 	}
 
 	private Vector3 GetPointOnTorus (float u, float v) {
 		Vector3 p;
-		float r = (CurveRadius + pipeRadius * Mathf.Cos(v));
+		float r = (CurveRadius + PipeRadius * Mathf.Cos(v));
 		p.x = r * Mathf.Sin(u);
 		p.y = r * Mathf.Cos(u);
-		p.z = pipeRadius * Mathf.Sin(v);
+		p.z = PipeRadius * Mathf.Sin(v);
 		return p;
 	}
-
-    #endregion
-
-
 
 	#endregion
 }

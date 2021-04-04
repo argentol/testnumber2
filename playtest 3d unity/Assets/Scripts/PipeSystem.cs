@@ -1,217 +1,250 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+
 public class PipeSystem : MonoBehaviour {
 
-	public Pipe pipePrefab;
+	public Pipe pipePrefab_;
 
-	public int pipeCount;
+	public ColorObjectManager colorObjectManager_;
+	public int pipeCount_;
 
-	private Pipe[] pipes;
+	private Pipe[] pipes_;
 
-    private int WhitePipe = 2;
+    private int whitePipe_ = 2;
 
+    public Button button1_;
+	public Button button2_;
+	public Button button3_;
 
-    public Button Button1;
-	public Button Button2;
-	public Button Button3;
+	public Material color1_;
+	public Material color2_;
+	public Material color3_;
 
-	public GameObject cheating;
+	public Material color1Button_;
+	public Material color2Button_;
+	public Material color3Button_;
 
-	public Material Color1;
-	public Material Color2;
-	public Material Color3;
+	public GameObject player_;
+	public GameObject textLose_;
 
-	public Material Color1Button;
-	public Material Color2Button;
-	public Material Color3Button;
-
-	public GameObject Player;
-	public GameObject TextLose;
-
-	int renewColors;
 
 	public bool StartOfGame = false;
-	private int newLevel = 10;
-	private int newLevel1 = 0;
 
-	bool WhiteRepeat = false;
-    private bool NewLevel = false;
+	private const int StartLevel = 10;
+	private const int EndLevel = 0;
+
+	private int newLevel_ = StartLevel;
+
+	private int newLevel1_ = EndLevel;
+
+	bool whiteRepeat_ = false;
+
+	private int RandomMaterial = 1;
 
 	private void Awake ()
 	{
-
 		RandomizeOfColors();
 
-		pipes = new Pipe[pipeCount];
-		for (int i = 0; i < pipes.Length; i++) {
-			Pipe pipe = pipes[i] = Instantiate<Pipe>(pipePrefab);
-			pipe.transform.SetParent(transform, false);
-			pipe.Generate(WhitePipe,NewLevel, StartOfGame);
-            WhitePipe++;
-            if (i > 0) {
-				pipe.AlignWith(pipes[i - 1]);
-			}
-		}
+		pipes_ = CreateDefaultPipes();
 
-		AlignNextPipeWithOrigin(WhitePipe, newLevel);
+		AlignNextPipeWithOrigin();
+		SetMaterialColorForLastPipe(whitePipe_, whitePipe_);
+
 		ColoringOfButtons();
-		pipes[pipeCount-1].GetComponent<Renderer>().material.color = Color.red;
 		StartOfGame = false;
 	}
 
+	private Pipe[] CreateDefaultPipes()
+    {
+		var pipes = new Pipe[pipeCount_];
+
+		for (int i = 0; i < pipes.Length; i++)
+		{
+			pipes[i] = Instantiate<Pipe>(pipePrefab_);
+			pipes[i].transform.SetParent(transform, false);
+
+			pipes[i].InitializePipe(whitePipe_, StartOfGame);
+
+			whitePipe_++;
+
+			if (i > 0)
+			{
+				pipes[i].AlignWith(pipes[i - 1]);
+			}
+		}
+
+		return pipes;
+	}
 	
     void FixedUpdate()
     {
-		IsLose();
-		if ((pipes[0].GetComponent<Renderer>().material.color == Color.white) && (StartOfGame = false))
-			StartOfGame = true;
-		if ((pipes[1].GetComponent<Renderer>().material.color == Color.white) && (newLevel == 9) /*&& (pipes[1].GetComponent<Renderer>().material.color == Color.white)*/)
-		{
-			ColoringOfButtons();
-		}
+		CheckLose();
 
-		if ((pipes[1].GetComponent<Renderer>().material.color == Color.white) && (newLevel == 0)  /*&& (pipes[1].GetComponent<Renderer>().material.color == Color.white)*/)
+        var currentPipeColor = pipes_[1].GetComponent<Renderer>().material.color;
+
+		if (currentPipeColor == Color.white && newLevel_ == StartLevel)
 		{
 			RandomizeOfColors();
-			newLevel = 10;
-			NewLevel = true;
 			ColoringOfPipes();
 			ColoringOfButtons();
 		}
 
-		if ((pipes[1].GetComponent<Renderer>().material.color == Color.white) && (WhiteRepeat == false))
+		if (currentPipeColor == Color.white && whiteRepeat_ == false)
 		{
-			newLevel--;
-			WhiteRepeat = true;
-			NewLevel = false;
+			newLevel_--;
+			whiteRepeat_ = true;
 		}
-		if ((pipes[1].GetComponent<Renderer>().material.color == Color.white) && (newLevel1 == 0))
+		if (currentPipeColor == Color.white && newLevel1_ == EndLevel)
 		{
-			newLevel++;
-			NewLevel = true;
-			newLevel1 = -10;
+			newLevel_++;
+			newLevel1_ = -StartLevel;
 		}
-		if (!(pipes[1].GetComponent<Renderer>().material.color == Color.white))
+		if (!(currentPipeColor == Color.white))
 		{
-			WhiteRepeat = false;
-			NewLevel = false;
+			whiteRepeat_ = false;
 		}
     }
 
 
     void RandomizeOfColors()
     {
-        Color1.color = new Color(Random.value, Random.value, Random.value, 1);
-        Color2.color = new Color(Random.value, Random.value, Random.value, 1);
-        Color3.color = new Color(Random.value, Random.value, Random.value, 1);
+        color1_.color = new Color(Random.value, Random.value, Random.value, 1);
+        color2_.color = new Color(Random.value, Random.value, Random.value, 1);
+        color3_.color = new Color(Random.value, Random.value, Random.value, 1);
 
-        Color1Button.color = Color1.color;
-        Color2Button.color = Color2.color;
-		Color3Button.color = Color3.color;
+        color1Button_.color = color1_.color;
+        color2Button_.color = color2_.color;
+		color3Button_.color = color3_.color;
 	}
 
-    public Pipe SetupFirstPipe () {
-		transform.localPosition = new Vector3(0f, -pipes[1].CurveRadius);
-		return pipes[1];
+    public Pipe SetupFirstPipe () 
+	{
+		transform.localPosition = new Vector3(0f, -pipes_[1].CurveRadius);
+		return pipes_[1];
 	}
 
-	public Pipe SetupNextPipe () {
+	public Pipe SetupNextPipe () 
+	{
 		ShiftPipes();
-		AlignNextPipeWithOrigin(WhitePipe, newLevel);
-        WhitePipe++;
-        pipes[pipes.Length - 1].Generate(WhitePipe, NewLevel, StartOfGame);
-		pipes[pipes.Length - 1].AlignWith(pipes[pipes.Length - 2]);
-		transform.localPosition = new Vector3(0f, -pipes[1].CurveRadius);
-		return pipes[1];
+		AlignNextPipeWithOrigin();
+		SetMaterialColorForLastPipe(whitePipe_, whitePipe_);
+
+		whitePipe_++;
+        pipes_[pipes_.Length - 1].InitializePipe(whitePipe_, StartOfGame);
+		pipes_[pipes_.Length - 1].AlignWith(pipes_[pipes_.Length - 2]);
+		transform.localPosition = new Vector3(0f, -pipes_[1].CurveRadius);
+		return pipes_[1];
 	}
 
-	private void ShiftPipes () {
-		Pipe temp = pipes[0];
-		for (int i = 1; i < pipes.Length; i++) {
-			pipes[i - 1] = pipes[i];
+	private void ShiftPipes () 
+	{
+		Pipe temp = pipes_[0];
+		for (int i = 1; i < pipes_.Length; i++) {
+			pipes_[i - 1] = pipes_[i];
 		}
-		pipes[pipes.Length - 1] = temp;
+		pipes_[pipes_.Length - 1] = temp;
 	}
 
-	int RandomMaterial = 1;
 
 	private void ColoringOfPipes()
     {
-		print("Hello");
-		for (int i = 1; i < pipes.Length; i++)
+		for (int i = 1; i < pipes_.Length; i++)
 			if (i % 2 == 0)
 			{
 				RandomMaterial = Random.Range(1, 4);
 				if (RandomMaterial  == 1)
-					pipes[i].GetComponent<Renderer>().material.color = Color1Button.color;
+					pipes_[i].GetComponent<Renderer>().material.color = color1Button_.color;
 				if (RandomMaterial == 2)
-					pipes[i].GetComponent<Renderer>().material.color = Color2Button.color;
+					pipes_[i].GetComponent<Renderer>().material.color = color2Button_.color;
 				if (RandomMaterial == 3)
-					pipes[i].GetComponent<Renderer>().material.color = Color3Button.color;
+					pipes_[i].GetComponent<Renderer>().material.color = color3Button_.color;
 			}
 			else
-				pipes[i].GetComponent<Renderer>().material.color = Color.white;
+				pipes_[i].GetComponent<Renderer>().material.color = Color.white;
 
 	}
+
 	private void ColoringOfButtons()
     {
-        Button1.image.color = Color1Button.color;
-        Button2.image.color = Color2Button.color;
-        Button3.image.color = Color3Button.color;
+        button1_.image.color = color1Button_.color;
+        button2_.image.color = color2Button_.color;
+        button3_.image.color = color3Button_.color;
     }
 
-	private void IsLose()
+	private void CheckLose()
     {
-		if ((pipes[1].GetComponent<Renderer>().material.color != Color.red) && (pipes[1].GetComponent<Renderer>().material.color != Color.black) && (pipes[1].GetComponent<Renderer>().material.color != Color.white))
+		var pipeMaterialColor = pipes_[1].GetComponent<Renderer>().material.color;
+
+		if (pipeMaterialColor != Color.black &&
+            pipeMaterialColor != Color.white)
 		{
-				if (pipes[1].GetComponent<Renderer>().material.color != Player.GetComponent<Renderer>().material.color)
-					TextLose.gameObject.SetActive(true);	
+			var playerColor = player_.GetComponent<Renderer>().material.color;
+			if (pipeMaterialColor != playerColor)
+			{
+				textLose_.gameObject.SetActive(true);
+			}
         }
 	}
-	private void AlignNextPipeWithOrigin (int WhitePipe, int newLevel) {
-		Transform transformToAlign = pipes[1].transform;
-		for (int i = 0; i < pipes.Length; i++)
+
+	private void AlignNextPipeWithOrigin() 
+	{
+		Transform transformToAlign = pipes_[1].transform;
+
+		for (int i = 0; i < pipes_.Length; i++)
 		{
 			if (i != 1)
 			{
-				pipes[i].transform.SetParent(transformToAlign);
+				pipes_[i].transform.SetParent(transformToAlign);
 			}
 		}
-		if (newLevel == 0 )
+
+		transformToAlign.localPosition = Vector3.zero;
+		transformToAlign.localRotation = Quaternion.identity;
+
+		for (int i = 0; i < pipes_.Length; i++)
 		{
-			Material material = pipes[pipes.Length - 1].GetComponent<Renderer>().material;
-			material.color = Color.white;
-			NewLevel = false;
+			if (i != 1)
+			{
+				pipes_[i].transform.SetParent(transform);
+			}
+		}
+	}
+
+	private void SetMaterialColorForLastPipe(int newLevel, int whitePipe)
+	{
+		var pipeMaterialColor = GetPipeMaterialColor(newLevel, whitePipe);
+		pipes_[pipes_.Length - 1].SetMaterialColor(pipeMaterialColor);
+	}
+
+	private Color GetPipeMaterialColor(int whitePipe, int newLevel)
+	{
+		Color pipeMaterialColor;
+		if (newLevel == 0)
+		{
+			pipeMaterialColor = Color.white;
 		}
 		else
 		{
-			if (WhitePipe % 2 == 0)
+			if (whitePipe % 2 == 0)
 			{
-				Material material = pipes[pipes.Length - 1].GetComponent<Renderer>().material;
 				RandomMaterial = Random.Range(1, 4);
 				if (RandomMaterial == 1)
-					material.color = Color1.color;
-				if (RandomMaterial == 2)
-					material.color = Color2.color; 
-				if (RandomMaterial == 3)
-					material.color = Color3.color; 	
+					pipeMaterialColor = color1_.color;
+				else if (RandomMaterial == 2)
+					pipeMaterialColor = color2_.color;
+				else if (RandomMaterial == 3)
+					pipeMaterialColor = color3_.color;
+				else
+					pipeMaterialColor = Color.white;
+
 			}
 			else
 			{
-				Material material = pipes[pipes.Length - 1].GetComponent<Renderer>().material;
-				material.color = Color.white;
+				pipeMaterialColor = Color.white;
 			}
 		}
 
-        transformToAlign.localPosition = Vector3.zero;
-		transformToAlign.localRotation = Quaternion.identity;
-
-		for (int i = 0; i < pipes.Length; i++)
-		{
-			if (i != 1)
-			{
-				pipes[i].transform.SetParent(transform);
-			}
-		}
+		return pipeMaterialColor;
 	}
+
 }
