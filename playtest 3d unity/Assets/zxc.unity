@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pipeSystem: {fileID: 1105136080}
-  velocity: 5
+  velocity: 10
   rotationVelocity: 180
 --- !u!4 &445757956
 Transform:
@@ -656,14 +656,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e3433c691cc04659a6325c7e1ab4906, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pipeRadius: 1
-  pipeSegmentCount: 20
-  ringDistance: 1
   minCurveRadius: 4
   maxCurveRadius: 20
   minCurveSegmentCount: 5
   maxCurveSegmentCount: 10
-  curveSegmentCount: 11
 --- !u!4 &988916289
 Transform:
   m_ObjectHideFlags: 0
@@ -1141,7 +1137,6 @@ GameObject:
   - component: {fileID: 1697662659}
   - component: {fileID: 1697662658}
   - component: {fileID: 1697662657}
-  - component: {fileID: 1697662660}
   m_Layer: 5
   m_Name: Button 1
   m_TagString: Untagged
@@ -1261,25 +1256,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1697662655}
   m_CullTransparentMesh: 0
---- !u!114 &1697662660
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1697662655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8453f5b953cf7ff4a9c7f92d0d239a04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Key: 0
-  Button1: {fileID: 0}
-  Button2: {fileID: 0}
-  Button3: {fileID: 0}
-  material1: {fileID: 2100000, guid: 5812b4fd9811b2841b053a53deb3eb9b, type: 2}
-  material2: {fileID: 2100000, guid: a623e4a9d711330438c6980b45266c6e, type: 2}
-  material3: {fileID: 2100000, guid: 7698cb1b8cae054458680ca108e9e796, type: 2}
 --- !u!1 &1794693441
 GameObject:
   m_ObjectHideFlags: 0

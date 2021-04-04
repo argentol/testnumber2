@@ -1,18 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Buttons : MonoBehaviour
 {
-   
+
+    #region Fields
+
     public KeyCode _Key;
+
     public Button Button1;
     public Button Button2;
     public Button Button3;
+
     public Material material1;
     public Material material2;
     public Material material3;
+
+    #endregion
+
     void FixedUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Z))
@@ -28,18 +33,4 @@ public class Buttons : MonoBehaviour
             Button3.onClick.Invoke();
         }
     }
-
-    public void OnButtonPress()
-    {
-        Debug.Log("zxc");
-    }
-
-
-    //void update()
-    //{
-    //    if (Input.GetKeyDown("z"))
-    //    {
-    //        print("df");
-    //    }
-    //}
 }

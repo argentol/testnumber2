@@ -2,53 +2,59 @@
 
 public class Pipe : MonoBehaviour {
 
-	public float pipeRadius;
-	public int pipeSegmentCount;
+    #region Fields
 
-	public float ringDistance;
+    private const float pipeRadius = 1.0f; // радиус внутри трубы
+	private const int pipeSegmentCount = 20; // кол-во сегментов, образующих тор
+	private const float ringDistance = 1.0f; // хз
 
-	public float minCurveRadius, maxCurveRadius;
-	public int minCurveSegmentCount, maxCurveSegmentCount;
+    /// <summary>
+	/// 
+	/// </summary>
+	public float minCurveRadius, maxCurveRadius; // радиус от центра тора до трубы
 
-	private float curveRadius;
-	public int curveSegmentCount;
+
+	public int minCurveSegmentCount, maxCurveSegmentCount; // кол-во сегментов, которые возьмутся из тора
+
+	private int curveSegmentCount;
 
 	private Mesh mesh;
-	private Vector3[] vertices;
 	private int[] triangles;
 
-	private float curveAngle;
-	private float relativeRotation;
+    #endregion
 
-	private Vector2[] uv;
+    #region Properties
 
-	public float CurveAngle {
-		get {
-			return curveAngle;
-		}
-	}
+    public float CurveAngle { get; private set; }
 
-	public float CurveRadius {
-		get {
-			return curveRadius;
-		}
-	}
+	public float CurveRadius { get; private set; }
 
-	public float RelativeRotation {
-		get {
-			return relativeRotation;
-		}
-	}
+	public float RelativeRotation { get; private set; }
 
-	private void Awake () {
-		GetComponent<MeshFilter>().mesh = mesh = new Mesh();
+	#endregion
+
+	#region Methods
+
+	#region Overrides
+
+	private void Awake()
+	{
+		var meshFilter = GetComponent<MeshFilter>();
+		mesh = new Mesh();
 		mesh.name = "Pipe";
+
+		meshFilter.mesh = mesh;
 	}
+
+	#endregion
+
+	#region  Custom Methods
+
 	public void Generate (int white, bool NewLevel, bool StartOfGame) {
 		if (StartOfGame && !NewLevel)
 		{
 			curveSegmentCount = maxCurveSegmentCount;
-			curveRadius = Random.Range(minCurveRadius, maxCurveRadius);
+			CurveRadius = Random.Range(minCurveRadius, maxCurveRadius);
 			NewLevel = false;
 		}
 		else
@@ -56,7 +62,7 @@ public class Pipe : MonoBehaviour {
 			if (NewLevel)
 			{
 				curveSegmentCount = maxCurveSegmentCount;
-				curveRadius = Random.Range(minCurveRadius, maxCurveRadius);
+				CurveRadius = Random.Range(minCurveRadius, maxCurveRadius);
 				NewLevel = false;
 			}
 
@@ -65,50 +71,53 @@ public class Pipe : MonoBehaviour {
 				if (white % 2 == 0)
 				{
 					curveSegmentCount = 1;
-					curveRadius = Random.Range(minCurveRadius, maxCurveRadius);
+					CurveRadius = Random.Range(minCurveRadius, maxCurveRadius);
 				}
 				else
 				{
-					curveRadius = Random.Range(minCurveRadius, maxCurveRadius);
+					CurveRadius = Random.Range(minCurveRadius, maxCurveRadius);
 					curveSegmentCount =
 						Random.Range(minCurveSegmentCount, maxCurveSegmentCount + 1);
 				}
 			}
 		}
 			mesh.Clear();
-			//SetUV();
-			SetVertices();
+			mesh.vertices = GetVertices();
 			SetTriangles();
 			mesh.RecalculateNormals();
 	}
 
-    //private void SetUV()
-    //{
-    //    uv = new Vector2[vertices.Length];
-    //    for (int i = 0; i < vertices.Length; i += 4)
-    //    {
-    //        uv[i] = Vector2.zero;
-    //        uv[i + 1] = Vector2.right;
-    //        uv[i + 2] = Vector2.up;
-    //        uv[i + 3] = Vector2.one;
-    //    }
-    //    mesh.uv = uv;
-    //}
+	public void AlignWith(Pipe pipe)
+	{
+		RelativeRotation =
+			Random.Range(0, curveSegmentCount) * 360f / pipeSegmentCount;
 
-    private void SetVertices () {
-		vertices = new Vector3[pipeSegmentCount * curveSegmentCount * 4];
-
-		float uStep = ringDistance / curveRadius;
-		curveAngle = uStep * curveSegmentCount * (360f / (2f * Mathf.PI));
-		CreateFirstQuadRing(uStep);
-		int iDelta = pipeSegmentCount * 4;
-		for (int u = 2, i = iDelta; u <= curveSegmentCount; u++, i += iDelta) {
-			CreateQuadRing(u * uStep, i);
-		}
-		mesh.vertices = vertices;
+		transform.SetParent(pipe.transform, false);
+		transform.localPosition = Vector3.zero;
+		transform.localRotation = Quaternion.Euler(0f, 0f, -pipe.CurveAngle);
+		transform.Translate(0f, pipe.CurveRadius, 0f);
+		transform.Rotate(RelativeRotation, 0f, 0f);
+		transform.Translate(0f, -CurveRadius, 0f);
+		transform.SetParent(pipe.transform.parent);
+		transform.localScale = Vector3.one;
 	}
 
-	private void CreateFirstQuadRing (float u) {
+	private Vector3[] GetVertices () {
+		var vertices = new Vector3[pipeSegmentCount * curveSegmentCount * 4];
+
+		float uStep = ringDistance / CurveRadius;
+		CurveAngle = uStep * curveSegmentCount * (360f / (2f * Mathf.PI));
+
+		CreateFirstQuadRing(vertices, uStep);
+		int iDelta = pipeSegmentCount * 4;
+		for (int u = 2, i = iDelta; u <= curveSegmentCount; u++, i += iDelta) {
+			CreateQuadRing(vertices, u * uStep, i);
+		}
+
+		return vertices;
+	}
+
+	private void CreateFirstQuadRing (Vector3[] vertices, float u) {
 		float vStep = (2f * Mathf.PI) / pipeSegmentCount;
 
 		Vector3 vertexA = GetPointOnTorus(0f, 0f);
@@ -121,7 +130,7 @@ public class Pipe : MonoBehaviour {
 		}
 	}
 
-	private void CreateQuadRing (float u, int i) {
+	private void CreateQuadRing (Vector3[] vertices, float u, int i) {
 		float vStep = (2f * Mathf.PI) / pipeSegmentCount;
 		int ringOffset = pipeSegmentCount * 4;
 
@@ -147,24 +156,16 @@ public class Pipe : MonoBehaviour {
 
 	private Vector3 GetPointOnTorus (float u, float v) {
 		Vector3 p;
-		float r = (curveRadius + pipeRadius * Mathf.Cos(v));
+		float r = (CurveRadius + pipeRadius * Mathf.Cos(v));
 		p.x = r * Mathf.Sin(u);
 		p.y = r * Mathf.Cos(u);
 		p.z = pipeRadius * Mathf.Sin(v);
 		return p;
 	}
 
-	public void AlignWith (Pipe pipe) {
-		relativeRotation =
-			Random.Range(0, curveSegmentCount) * 360f / pipeSegmentCount;
+    #endregion
 
-		transform.SetParent(pipe.transform, false);
-		transform.localPosition = Vector3.zero;
-		transform.localRotation = Quaternion.Euler(0f, 0f, -pipe.curveAngle);
-		transform.Translate(0f, pipe.curveRadius, 0f);
-		transform.Rotate(relativeRotation, 0f, 0f);
-		transform.Translate(0f, -curveRadius, 0f);
-		transform.SetParent(pipe.transform.parent);
-		transform.localScale = Vector3.one;
-	}
+
+
+	#endregion
 }
