@@ -44,22 +44,13 @@ public class Pipe : MonoBehaviour {
 		GetComponent<MeshFilter>().mesh = mesh = new Mesh();
 		mesh.name = "Pipe";
 	}
-	public void Generate (int white, bool NewLevel, bool StartOfGame) {
-		if (StartOfGame && !NewLevel)
-		{
-			curveSegmentCount = maxCurveSegmentCount;
-			curveRadius = Random.Range(minCurveRadius, maxCurveRadius);
-			NewLevel = false;
-		}
-		else
-		{
+	public void Generate (int white, bool NewLevel) {
 			if (NewLevel)
 			{
 				curveSegmentCount = maxCurveSegmentCount;
 				curveRadius = Random.Range(minCurveRadius, maxCurveRadius);
 				NewLevel = false;
 			}
-
 			else
 			{
 				if (white % 2 == 0)
@@ -74,7 +65,7 @@ public class Pipe : MonoBehaviour {
 						Random.Range(minCurveSegmentCount, maxCurveSegmentCount + 1);
 				}
 			}
-		}
+		
 			mesh.Clear();
 			//SetUV();
 			SetVertices();
