@@ -28,7 +28,8 @@ public class PipeSystem : MonoBehaviour {
 	public Player Player;
 	public GameObject TextLose;
 
-	private Color[] MassiveOfColors = /*CreatingMassiveOfColors()*/ new Color[] { Color.blue, Color.red, Color.yellow, Color.green, Color.grey, Color.magenta, Color.cyan, Color.black };
+
+	private Color[] MassiveOfColors = CreatingMassiveOfColors() /*new Color[] { Color.blue, Color.red, Color.yellow, Color.green, Color.grey, Color.magenta, Color.cyan, Color.black }*/;
 
 	int renewColors;
 
@@ -181,20 +182,33 @@ public class PipeSystem : MonoBehaviour {
 				pipes[i].GetComponent<Renderer>().material.color = Color.white;
 
 	}
-    //private static Color[] CreatingMassiveOfColors()
-    //{
-    //    var massiveOfColors = new Color[9];
-    //    massiveOfColors[0] = new Color(0, 0, 0);
-    //    massiveOfColors[1] = new Color(0, 0, 0);
-    //    massiveOfColors[2] = new Color(0, 0, 0);
-    //    massiveOfColors[3] = new Color(0, 0, 0);
-    //    massiveOfColors[4] = new Color(0, 0, 0);
-    //    massiveOfColors[5] = new Color(0, 0, 0);
-    //    massiveOfColors[6] = new Color(0, 0, 0);
-    //    massiveOfColors[7] = new Color(0, 0, 0);
-    //    massiveOfColors[8] = new Color(0, 0, 0);
-    //    return massiveOfColors;
-    //}
+    private static Color[] CreatingMassiveOfColors()
+    {
+        var massiveOfColors = new Color[20];
+        massiveOfColors[0] = new Color(0, 0, 0.5f);  //темно-синий
+        massiveOfColors[1] = new Color(0, 0, 1);  //синий
+        massiveOfColors[2] = new Color(0, 0.4f, 0.1f); //темно-зеленый
+        massiveOfColors[3] = new Color(0, 0.4f, 1);   //голубой
+        massiveOfColors[4] = new Color(0, 0.8f, 0.2f); //светло-зеленый
+        massiveOfColors[5] = new Color(0, 1, 0); //зеленый
+        massiveOfColors[6] = new Color(0.1f, 0.9f, 1); //лазурный
+        massiveOfColors[7] = new Color(0.3f, 0, 0.6f); //темно-фиолетовый
+        massiveOfColors[8] = new Color(0.4f, 0, 0.7f); //фиолетовый светлее
+		massiveOfColors[9] = new Color(0.6f, 0.3f, 0); //светло-коричневый
+		massiveOfColors[10] = new Color(0.7f, 0.7f, 0.1f); //хз чета типа травы	жухлой
+		massiveOfColors[11] = new Color(1, 0, 1); //розовый
+		massiveOfColors[12] = new Color(1, 0.5f, 0); //светло-оранжевый
+		massiveOfColors[13] = new Color(0.9f, 0.6f, 0.1f);  //что-то между желтым и оранжевым
+		massiveOfColors[14] = new Color(1, 0.5f, 0.9f);  //светло-розовый
+		massiveOfColors[15] = new Color(1, 1, 0); //желтый
+		massiveOfColors[16] = new Color(1, 0, 0); //красный
+		massiveOfColors[17] = new Color(0, 0, 0);  //черный
+		massiveOfColors[18] = new Color(0, 1, 1);  //cyan
+		massiveOfColors[19] = new Color(1, 0, 1); //magenta
+		massiveOfColors[19] = new Color(0.5f, 0.5f, 0.5f); //grey
+
+		return massiveOfColors;
+    }
     private void ColoringOfButtons()
     {
         Button1.image.color = Color1Button.color;

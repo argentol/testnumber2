@@ -294,6 +294,7 @@ MonoBehaviour:
   pipeSystem: {fileID: 1105136080}
   TapToStart: {fileID: 981074126}
   ScoreCounter: {fileID: 0}
+  Sphere: {fileID: 1955118749}
   PlayerVelocity: 15
   acceleration: 2
   rotationVelocity: 180
@@ -759,6 +760,7 @@ MonoBehaviour:
   maxCurveRadius: 100
   minCurveSegmentCount: 4
   maxCurveSegmentCount: 6
+  FastLevel: 1
   curveSegmentCount: 11
 --- !u!4 &988916289
 Transform:
@@ -892,7 +894,7 @@ MonoBehaviour:
   Color1Button: {fileID: 2100000, guid: f14f488814de4ff408033642ee402c67, type: 2}
   Color2Button: {fileID: 2100000, guid: 79c4d58a733530f4e816501905062258, type: 2}
   Color3Button: {fileID: 2100000, guid: 6f53ac1db60a3944a8d4d786caec9296, type: 2}
-  Player: {fileID: 1955118749}
+  Player: {fileID: 445757955}
   TextLose: {fileID: 255771760}
   StartOfGame: 0
 --- !u!4 &1105136081

@@ -9,6 +9,7 @@ public class Pipe : MonoBehaviour {
 
 	public float minCurveRadius, maxCurveRadius;
 	public int minCurveSegmentCount, maxCurveSegmentCount;
+	public bool FastLevel = false;
 
 	private float curveRadius;
 	public int curveSegmentCount;
@@ -55,7 +56,10 @@ public class Pipe : MonoBehaviour {
 			{
 				if (white % 2 == 0)
 				{
-					curveSegmentCount = 1;
+					if (FastLevel == true)
+						curveSegmentCount = minCurveSegmentCount + 3;
+					else
+						curveSegmentCount = 1;
 					curveRadius = Random.Range(minCurveRadius, maxCurveRadius);
 				}
 				else
