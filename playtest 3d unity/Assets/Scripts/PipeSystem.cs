@@ -27,6 +27,10 @@ public class PipeSystem : MonoBehaviour {
 
 	public Player Player;
 	public GameObject TextLose;
+	public GameObject TextWin;
+	public float LevelDuration;
+	private float PrivateLevelDuration;
+	public bool endlessLevel;
 
 
 	private Color[] MassiveOfColors = CreatingMassiveOfColors() /*new Color[] { Color.blue, Color.red, Color.yellow, Color.green, Color.grey, Color.magenta, Color.cyan, Color.black }*/;
@@ -41,7 +45,7 @@ public class PipeSystem : MonoBehaviour {
 	bool WhiteRepeat = false;
 	private bool NewLevel = false;
 	private void Awake() {
-		//CreatingMassiveOfColors();
+		PrivateLevelDuration = LevelDuration;
 		newLevel = (pipeCount - 1) / 2;
 		pipes = new Pipe[pipeCount];
 		for (int i = 0; i < pipes.Length; i++) {
@@ -101,8 +105,9 @@ public class PipeSystem : MonoBehaviour {
 			WhiteRepeat = false;
 			NewLevel = false;
 		}
-		print("Start of game " + StartOfGame);
-		print("NewLevel " + NewLevel);
+		PrivateLevelDuration -= Time.deltaTime;
+		if ((PrivateLevelDuration < 0) && (endlessLevel == false))
+			EndOfLevel();
 	}
 
 	void randomizeOfColors()
@@ -184,7 +189,7 @@ public class PipeSystem : MonoBehaviour {
 	}
     private static Color[] CreatingMassiveOfColors()
     {
-        var massiveOfColors = new Color[20];
+        var massiveOfColors = new Color[17];
         massiveOfColors[0] = new Color(0, 0, 0.5f);  //темно-синий
         massiveOfColors[1] = new Color(0, 0, 1);  //синий
         massiveOfColors[2] = new Color(0, 0.4f, 0.1f); //темно-зеленый
@@ -192,20 +197,16 @@ public class PipeSystem : MonoBehaviour {
         massiveOfColors[4] = new Color(0, 0.8f, 0.2f); //светло-зеленый
         massiveOfColors[5] = new Color(0, 1, 0); //зеленый
         massiveOfColors[6] = new Color(0.1f, 0.9f, 1); //лазурный
-        massiveOfColors[7] = new Color(0.3f, 0, 0.6f); //темно-фиолетовый
-        massiveOfColors[8] = new Color(0.4f, 0, 0.7f); //фиолетовый светлее
-		massiveOfColors[9] = new Color(0.6f, 0.3f, 0); //светло-коричневый
-		massiveOfColors[10] = new Color(0.7f, 0.7f, 0.1f); //хз чета типа травы	жухлой
-		massiveOfColors[11] = new Color(1, 0, 1); //розовый
-		massiveOfColors[12] = new Color(1, 0.5f, 0); //светло-оранжевый
-		massiveOfColors[13] = new Color(0.9f, 0.6f, 0.1f);  //что-то между желтым и оранжевым
-		massiveOfColors[14] = new Color(1, 0.5f, 0.9f);  //светло-розовый
-		massiveOfColors[15] = new Color(1, 1, 0); //желтый
-		massiveOfColors[16] = new Color(1, 0, 0); //красный
-		massiveOfColors[17] = new Color(0, 0, 0);  //черный
-		massiveOfColors[18] = new Color(0, 1, 1);  //cyan
-		massiveOfColors[19] = new Color(1, 0, 1); //magenta
-		massiveOfColors[19] = new Color(0.5f, 0.5f, 0.5f); //grey
+        massiveOfColors[7] = new Color(0.4f, 0, 0.7f); //фиолетовый светлее
+		massiveOfColors[8] = new Color(0.6f, 0.3f, 0); //светло-коричневый
+		massiveOfColors[9] = new Color(1, 0, 1); //пурпурный
+		massiveOfColors[10] = new Color(1, 0.5f, 0); //светло-оранжевый
+		massiveOfColors[11] = new Color(0.9f, 0.6f, 0.1f);  //что-то между желтым и оранжевым
+		massiveOfColors[12] = new Color(1, 0.5f, 0.9f);  //светло-розовый
+		massiveOfColors[13] = new Color(1, 1, 0); //желтый
+		massiveOfColors[14] = new Color(1, 0, 0); //красный
+		massiveOfColors[15] = new Color(0, 0, 0);  //черный
+		massiveOfColors[16] = new Color(0.5f, 0.5f, 0.5f); //grey
 
 		return massiveOfColors;
     }
@@ -227,6 +228,17 @@ public class PipeSystem : MonoBehaviour {
 			}
         }
 	}
+
+	private void EndOfLevel()
+    {
+		Debug.Log("end");
+		if ((pipes[1].GetComponent<Renderer>().material.color == Color.white) && (newLevel == 0))
+        {
+			TextWin.gameObject.SetActive(true);
+			Player.KillPlayer();
+        }
+	}
+
 	private void AlignNextPipeWithOrigin (int WhitePipe, int newLevel) {
 		Transform transformToAlign = pipes[1].transform;
 		for (int i = 0; i < pipes.Length; i++)

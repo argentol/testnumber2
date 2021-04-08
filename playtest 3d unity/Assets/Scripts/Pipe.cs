@@ -21,7 +21,6 @@ public class Pipe : MonoBehaviour {
 	private float curveAngle;
 	private float relativeRotation;
 
-	private Vector2[] uv;
 
 	public float CurveAngle {
 		get {
@@ -48,9 +47,16 @@ public class Pipe : MonoBehaviour {
 	public void Generate (int white, bool NewLevel) {
 			if (NewLevel)
 			{
-				curveSegmentCount = maxCurveSegmentCount;
-				curveRadius = Random.Range(minCurveRadius, maxCurveRadius);
-				NewLevel = false;
+				if (FastLevel == true)
+				{
+					curveSegmentCount = maxCurveSegmentCount * 3;
+					curveRadius = Random.Range(minCurveRadius, maxCurveRadius);
+				}
+				else
+				{
+					curveSegmentCount = maxCurveSegmentCount;
+					curveRadius = Random.Range(minCurveRadius, maxCurveRadius);
+				}
 			}
 			else
 			{
@@ -71,24 +77,10 @@ public class Pipe : MonoBehaviour {
 			}
 		
 			mesh.Clear();
-			//SetUV();
 			SetVertices();
 			SetTriangles();
 			mesh.RecalculateNormals();
 	}
-
-    //private void SetUV()
-    //{
-    //    uv = new Vector2[vertices.Length];
-    //    for (int i = 0; i < vertices.Length; i += 4)
-    //    {
-    //        uv[i] = Vector2.zero;
-    //        uv[i + 1] = Vector2.right;
-    //        uv[i + 2] = Vector2.up;
-    //        uv[i + 3] = Vector2.one;
-    //    }
-    //    mesh.uv = uv;
-    //}
 
     private void SetVertices () {
 		vertices = new Vector3[pipeSegmentCount * curveSegmentCount * 4];
