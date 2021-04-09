@@ -169,14 +169,26 @@ public class PipeSystem : MonoBehaviour {
 
 	int RandomMaterial = 1;
 
+	int[] mas;
 	private void ColoringOfPipes()
 	{
+		var mas = new int[pipes.Length-1];
 		for (int i = 1; i < pipes.Length; i++)
 			if (i % 2 == 0)
 			{
 				RandomMaterial = Random.Range(1, 4);
+                mas[i - 1] = RandomMaterial;
 
-				if (RandomMaterial == 1)
+                if (i >= 4)
+                {
+					while (mas[i - 1] == mas[i - 3])
+					{
+						RandomMaterial = Random.Range(1, 4);
+						mas[i - 1] = RandomMaterial;
+					}
+                }
+
+                if (RandomMaterial == 1)
 					pipes[i].GetComponent<Renderer>().material.color = Color1Button.color;
 				if (RandomMaterial == 2)
 					pipes[i].GetComponent<Renderer>().material.color = Color2Button.color;
@@ -184,29 +196,27 @@ public class PipeSystem : MonoBehaviour {
 					pipes[i].GetComponent<Renderer>().material.color = Color3Button.color;
 			}
 			else
+			{
 				pipes[i].GetComponent<Renderer>().material.color = Color.white;
-
+                mas[i - 1] = 0;
+            }
 	}
     private static Color[] CreatingMassiveOfColors()
     {
-        var massiveOfColors = new Color[17];
-        massiveOfColors[0] = new Color(0, 0, 0.5f);  //темно-синий
-        massiveOfColors[1] = new Color(0, 0, 1);  //синий
-        massiveOfColors[2] = new Color(0, 0.4f, 0.1f); //темно-зеленый
-        massiveOfColors[3] = new Color(0, 0.4f, 1);   //голубой
-        massiveOfColors[4] = new Color(0, 0.8f, 0.2f); //светло-зеленый
-        massiveOfColors[5] = new Color(0, 1, 0); //зеленый
-        massiveOfColors[6] = new Color(0.1f, 0.9f, 1); //лазурный
-        massiveOfColors[7] = new Color(0.4f, 0, 0.7f); //фиолетовый светлее
-		massiveOfColors[8] = new Color(0.6f, 0.3f, 0); //светло-коричневый
-		massiveOfColors[9] = new Color(1, 0, 1); //пурпурный
-		massiveOfColors[10] = new Color(1, 0.5f, 0); //светло-оранжевый
-		massiveOfColors[11] = new Color(0.9f, 0.6f, 0.1f);  //что-то между желтым и оранжевым
-		massiveOfColors[12] = new Color(1, 0.5f, 0.9f);  //светло-розовый
-		massiveOfColors[13] = new Color(1, 1, 0); //желтый
-		massiveOfColors[14] = new Color(1, 0, 0); //красный
-		massiveOfColors[15] = new Color(0, 0, 0);  //черный
-		massiveOfColors[16] = new Color(0.5f, 0.5f, 0.5f); //grey
+        var massiveOfColors = new Color[13];
+        massiveOfColors[0] = new Color(0, 0, 1);  //синий
+        massiveOfColors[1] = new Color(0, 0.4f, 0.1f); //темно-зеленый
+        massiveOfColors[2] = new Color(0, 0.4f, 1);   //голубой
+        massiveOfColors[3] = new Color(0, 1, 0); //зеленый
+        massiveOfColors[4] = new Color(0.1f, 0.9f, 1); //лазурный
+		massiveOfColors[5] = new Color(0.6f, 0.3f, 0); //светло-коричневый
+		massiveOfColors[6] = new Color(1, 0, 1); //пурпурный
+		massiveOfColors[7] = new Color(1, 0.5f, 0); //светло-оранжевый
+		massiveOfColors[8] = new Color(1, 0.5f, 0.9f);  //светло-розовый
+		massiveOfColors[9] = new Color(1, 1, 0); //желтый
+		massiveOfColors[10] = new Color(1, 0, 0); //красный
+		massiveOfColors[11] = new Color(0, 0, 0);  //черный
+		massiveOfColors[12] = new Color(0.5f, 0.5f, 0.5f); //grey
 
 		return massiveOfColors;
     }

@@ -734,8 +734,9 @@ GameObject:
   m_Component:
   - component: {fileID: 720966376}
   - component: {fileID: 720966375}
+  - component: {fileID: 720966377}
   m_Layer: 0
-  m_Name: Cheating
+  m_Name: LevelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -794,6 +795,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &720966377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 720966374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 000f2e8f9efdac2439442d847297c1de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &907192524
 GameObject:
   m_ObjectHideFlags: 0
@@ -1226,7 +1239,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: cdadd76ce2d45ee48969f5e0b2a96674,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdadd76ce2d45ee48969f5e0b2a96674,
         type: 3}
@@ -1236,7 +1249,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: cdadd76ce2d45ee48969f5e0b2a96674,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cdadd76ce2d45ee48969f5e0b2a96674,
         type: 3}
@@ -1694,8 +1707,9 @@ GameObject:
   - component: {fileID: 1765614047}
   - component: {fileID: 1765614046}
   - component: {fileID: 1765614045}
+  - component: {fileID: 1765614044}
   m_Layer: 5
-  m_Name: ResartButton
+  m_Name: RestartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1717,9 +1731,21 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.45811033, y: 0.08144464}
   m_AnchorMax: {x: 0.5417794, y: 0.24455535}
-  m_AnchoredPosition: {x: 0, y: -0.2999878}
+  m_AnchoredPosition: {x: 0, y: -1}
   m_SizeDelta: {x: -2.5628967, y: 1.3865051}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1765614044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1765614042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 000f2e8f9efdac2439442d847297c1de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1765614045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1763,8 +1789,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1765614042}
-        m_MethodName: 
+      - m_Target: {fileID: 720966377}
+        m_MethodName: GoToScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
