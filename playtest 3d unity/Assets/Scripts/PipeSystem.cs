@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class PipeSystem : MonoBehaviour {
 
@@ -14,6 +15,10 @@ public class PipeSystem : MonoBehaviour {
 	public Button Button1;
 	public Button Button2;
 	public Button Button3;
+
+	public Button RestartButton;
+
+	public Button NextLevel;
 
 	public GameObject cheating;
 
@@ -166,7 +171,6 @@ public class PipeSystem : MonoBehaviour {
 		}
 		pipes[pipes.Length - 1] = temp;
 	}
-
 	int RandomMaterial = 1;
 
 	int[] mas;
@@ -235,15 +239,24 @@ public class PipeSystem : MonoBehaviour {
 			{
 				TextLose.gameObject.SetActive(true);
 				Player.KillPlayer();
+				RemoveButtons();
+				RestartButton.gameObject.SetActive(true);
 			}
         }
 	}
 
+	private void RemoveButtons()
+    {
+		Button1.gameObject.SetActive(false);
+		Button2.gameObject.SetActive(false);
+		Button3.gameObject.SetActive(false);
+	}
 	private void EndOfLevel()
     {
 		Debug.Log("end");
 		if ((pipes[1].GetComponent<Renderer>().material.color == Color.white) && (newLevel == 0))
         {
+			SaveSystem.UpdateLevel();
 			TextWin.gameObject.SetActive(true);
 			Player.KillPlayer();
         }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System.Threading;
 
 public class Player : MonoBehaviour {
 
@@ -39,12 +40,15 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			StartGame = true;
+			ScoreCounter.gameObject.SetActive(true);
 			TapToStart.gameObject.SetActive(false);
 		}
 		if (StartGame == true)
 		{
-            while (PlayerVelocity >= velocity)
-                velocity += acceleration * Time.deltaTime;
+			while (PlayerVelocity >= velocity)
+			{
+				velocity += acceleration * Time.deltaTime;
+			}
             float delta = velocity * Time.deltaTime;
 			distanceTraveled += delta;
 			systemRotation += delta * deltaToRotation;

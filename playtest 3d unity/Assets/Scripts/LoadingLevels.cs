@@ -1,18 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEditor.SceneManagement;
 
 
 public class LoadingLevels : MonoBehaviour
 {
-    public GameObject hero;
-    public Scene zxc;
-    
-    public void GoToScene()
+    public void Restart()
     {
-        EditorSceneManager.MoveGameObjectToScene(hero, zxc);
-        //SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void GoToNextLevel()
+    {
+        var sceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings; 
+        Debug.Log(sceneCount);
+
+        var sceneObject = SaveSystem.LoadScene();
+        var sceneNumber = sceneObject.GetSceneNumber();
+        Debug.Log(sceneNumber);
+        SceneManager.LoadScene(sceneNumber);
+        Debug.Log(sceneNumber);
+
     }
 }

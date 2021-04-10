@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class Buttons : MonoBehaviour
 {
-   
     public KeyCode _Key;
     public Button Button1;
     public Button Button2;
@@ -14,6 +13,7 @@ public class Buttons : MonoBehaviour
     public Material material1;
     public Material material2;
     public Material material3;
+
     void FixedUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Z))
