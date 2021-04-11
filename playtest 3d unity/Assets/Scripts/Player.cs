@@ -38,7 +38,7 @@ public class Player : MonoBehaviour {
 	}
 
 	private void Update () {
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.touchCount > 0)
 		{
 			StartGame = true;
 			ScoreCounter.gameObject.SetActive(true);
