@@ -31,7 +31,7 @@ public class PipeSystem : MonoBehaviour {
 	public Material Color3Button;
 
 	public Player Player;
-	public GameObject TextLose;
+
 	public GameObject TextWin;
 	public float LevelDuration;
 	private float PrivateLevelDuration;
@@ -237,7 +237,6 @@ public class PipeSystem : MonoBehaviour {
 		{
 			if (pipes[1].GetComponent<Renderer>().material.color != Player.GetSphereMaterialColor())
 			{
-				TextLose.gameObject.SetActive(true);
 				Player.KillPlayer();
 				RemoveButtons();
 				RestartButton.gameObject.SetActive(true);
@@ -253,12 +252,13 @@ public class PipeSystem : MonoBehaviour {
 	}
 	private void EndOfLevel()
     {
-		Debug.Log("end");
 		if ((pipes[1].GetComponent<Renderer>().material.color == Color.white) && (newLevel == 0))
         {
 			SaveSystem.UpdateLevel();
 			TextWin.gameObject.SetActive(true);
 			Player.KillPlayer();
+			RemoveButtons();
+			NextLevel.gameObject.SetActive(true);
         }
 	}
 

@@ -13,14 +13,14 @@ public class LoadingLevels : MonoBehaviour
 
     public void GoToNextLevel()
     {
-        var sceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings; 
-        Debug.Log(sceneCount);
-
+        var sceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings;
         var sceneObject = SaveSystem.LoadScene();
         var sceneNumber = sceneObject.GetSceneNumber();
-        Debug.Log(sceneNumber);
         SceneManager.LoadScene(sceneNumber);
-        Debug.Log(sceneNumber);
+    }
 
+    public void GoToEndlessLevel()
+    {
+        SceneManager.LoadScene(4);
     }
 }

@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
 	public GameObject TapToStart;
 	public GameObject ScoreCounter;
 	public GameObject Sphere;
+	public GameObject LevelsMode;
 
 	private float velocity = 0;
 	public float PlayerVelocity;
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour {
 			StartGame = true;
 			ScoreCounter.gameObject.SetActive(true);
 			TapToStart.gameObject.SetActive(false);
+			LevelsMode.gameObject.SetActive(false);
 		}
 		if (StartGame == true)
 		{
@@ -109,6 +111,7 @@ public class Player : MonoBehaviour {
 	{
 		velocity = 0;
 		PlayerVelocity = -1;
+		LevelsMode.gameObject.SetActive(true);
 	}
 
 }
