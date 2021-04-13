@@ -13,20 +13,24 @@ public class Buttons : MonoBehaviour
     public Material material1;
     public Material material2;
     public Material material3;
+    public Player Player;
 
     void FixedUpdate()
     {
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Player.GameIsOver == false)
         {
-            Button1.onClick.Invoke();
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Button2.onClick.Invoke();
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            Button3.onClick.Invoke();
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                Button1.onClick.Invoke();
+            }
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                Button2.onClick.Invoke();
+            }
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                Button3.onClick.Invoke();
+            }
         }
     }
 

@@ -525,6 +525,7 @@ MonoBehaviour:
   acceleration: 1
   rotationVelocity: 180
   RotateOrNot: 0
+  GameIsOver: 0
 --- !u!4 &445757956
 Transform:
   m_ObjectHideFlags: 0
@@ -1044,7 +1045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pipePrefab: {fileID: 988916288}
   pipeCount: 21
-  Button1: {fileID: 0}
+  Button1: {fileID: 277360921}
   Button2: {fileID: 622629813}
   Button3: {fileID: 2056841722}
   RestartButton: {fileID: 1765614045}
@@ -1372,6 +1373,7 @@ MonoBehaviour:
   material1: {fileID: 0}
   material2: {fileID: 0}
   material3: {fileID: 0}
+  Player: {fileID: 445757955}
 --- !u!222 &1374995190
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2090,12 +2092,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Key: 0
-  Button1: {fileID: 0}
+  Button1: {fileID: 277360921}
   Button2: {fileID: 622629813}
   Button3: {fileID: 2056841722}
   material1: {fileID: 0}
   material2: {fileID: 0}
   material3: {fileID: 0}
+  Player: {fileID: 445757955}
 --- !u!1 &2056841720
 GameObject:
   m_ObjectHideFlags: 0

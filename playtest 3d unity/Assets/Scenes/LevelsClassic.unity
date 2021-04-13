@@ -443,6 +443,7 @@ MonoBehaviour:
   acceleration: 2
   rotationVelocity: 180
   RotateOrNot: 0
+  GameIsOver: 0
 --- !u!4 &445757956
 Transform:
   m_ObjectHideFlags: 0
@@ -1302,6 +1303,7 @@ MonoBehaviour:
   material1: {fileID: 0}
   material2: {fileID: 0}
   material3: {fileID: 0}
+  Player: {fileID: 445757955}
 --- !u!1 &1443497984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2340,12 +2342,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _Key: 0
-  Button1: {fileID: 0}
-  Button2: {fileID: 0}
-  Button3: {fileID: 0}
+  Button1: {fileID: 1913091271}
+  Button2: {fileID: 1295880451}
+  Button3: {fileID: 1500250627}
   material1: {fileID: 0}
   material2: {fileID: 0}
   material3: {fileID: 0}
+  Player: {fileID: 445757955}
 --- !u!1 &2057829426
 GameObject:
   m_ObjectHideFlags: 0

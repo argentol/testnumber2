@@ -29,6 +29,7 @@ public class Player : MonoBehaviour {
 
 	private Transform world, rotater;
 	private bool StartGame = false;
+	public bool GameIsOver = false;
 
 	private void Start () {
 		world = pipeSystem.transform.parent;
@@ -38,7 +39,7 @@ public class Player : MonoBehaviour {
 	}
 
 	private void Update () {
-		if (Input.touchCount > 0)
+		if (Input.GetKey(KeyCode.Space))
 		{
 			StartGame = true;
 			ScoreCounter.gameObject.SetActive(true);
@@ -112,6 +113,7 @@ public class Player : MonoBehaviour {
 		velocity = 0;
 		PlayerVelocity = -1;
 		LevelsMode.gameObject.SetActive(true);
+		GameIsOver = true;
 	}
 
 }
