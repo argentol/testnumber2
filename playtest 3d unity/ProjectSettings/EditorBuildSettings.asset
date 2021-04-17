@@ -7,16 +7,16 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/LevelsClassic.unity
-    guid: 4c18102c206a7a940b72ef36e75188b9
-  - enabled: 1
-    path: Assets/Scenes/CurvedLevel.unity
-    guid: 7c607a73a7dd7514096d3341fd6592ae
+    guid: a163352b788d82f458c4f5dbd4cc7a7d
   - enabled: 1
     path: Assets/Scenes/FastPipe.unity
-    guid: a2ca0c303c5fcb140ae4458c4d9c3f4e
+    guid: f87f0c06dcbbd8e44b052671c98e7cfa
+  - enabled: 1
+    path: Assets/Scenes/CurvedLevel.unity
+    guid: da41bd2f067f10240ae26ff5b2a2178a
   - enabled: 1
     path: Assets/Scenes/RotationLevel.unity
-    guid: 0ad276d39a9e40542b59528bf037e321
+    guid: 0e5e249ec474f614c8383795a5bad061
   - enabled: 1
     path: Assets/Scenes/Classic.unity
     guid: b3a61015a5697de4599c5520eaef1864
