@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class SaveSystem
 {
-    private static string filePath_ = Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Saves\nextLevel.txt");
+    private static string filePath_ = Path.Combine(Application.persistentDataPath, "nextLevel.txt");
 
     public static void UpdateLevel()
     {
@@ -17,15 +17,9 @@ public static class SaveSystem
             SaveScene(sceneObject);
         }
     }
+
     public static void SaveScene(SceneObject scene)
     {
-        //var formatter = new BinaryFormatter();
-
-        //var stream = new FileStream(filePath_, FileMode.Create);
-
-        //formatter.Serialize(stream, scene);
-        //stream.Close();
-
         File.WriteAllText(filePath_, scene.SceneCounter.ToString());
     }
 
@@ -33,23 +27,17 @@ public static class SaveSystem
     {
         SceneObject sceneObject = null;
 
-        if (File.Exists(filePath_))
-        {
-            var sceneNumber = GetSceneNumber();
+        var sceneNumber = GetSceneNumber();
 
-            if (sceneNumber.HasValue) 
-            {
-                sceneObject = new SceneObject(sceneNumber.Value);
-            }
-            else
-            {
-                Debug.LogError("Can't parse scene number from file " + filePath_);
-            }
+        if (sceneNumber.HasValue) 
+        {
+            sceneObject = new SceneObject(sceneNumber.Value);
         }
         else
         {
-            Debug.LogError("Save file was not found in " + filePath_);
+            Debug.LogError("Can't parse scene number from file " + filePath_);
         }
+
 
         return sceneObject;
     }
@@ -57,12 +45,22 @@ public static class SaveSystem
     private static int? GetSceneNumber()
     {
         int? sceneNumber = null;
-        var sceneString = File.ReadLines(filePath_).FirstOrDefault();
 
-        if (int.TryParse(sceneString, out var sceneNumber_))
+        if (File.Exists(filePath_))
         {
-            sceneNumber = sceneNumber_;
+            var sceneString = File.ReadLines(filePath_).FirstOrDefault();
+            if (int.TryParse(sceneString, out var sceneNumber_))
+            {
+                sceneNumber = sceneNumber_;
+            }
         }
+        else
+        {
+            sceneNumber = 0;
+            var scene = new SceneObject(sceneNumber.Value);
+            SaveScene(scene);
+        }
+
 
         return sceneNumber;
     }

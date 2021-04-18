@@ -15,24 +15,29 @@ public class Buttons : MonoBehaviour
     public Material material3;
     public Player Player;
 
-    void FixedUpdate()
-    {
-        if (Player.GameIsOver == false)
-        {
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                Button1.onClick.Invoke();
-            }
-            if (Input.GetKeyDown(KeyCode.X))
-            {
-                Button2.onClick.Invoke();
-            }
-            if (Input.GetKeyDown(KeyCode.C))
-            {
-                Button3.onClick.Invoke();
-            }
-        }
-    }
+    //void FixedUpdate()
+    //{
+    //    if (Player.GameIsOver == false)
+    //    {
+    //        //var v = Button1.transform.position;
+    //        //Debug.Log($"{v.x} {v.y} {v.z}");
+
+    //        if (Input.GetKeyDown(KeyCode.Z))
+    //        {
+    //            Button1.onClick.Invoke();
+    //        }
+    //        if (Input.GetKeyDown(KeyCode.X))
+    //        {
+    //            Button2.onClick.Invoke();
+    //        }
+    //        if (Input.GetKeyDown(KeyCode.C))
+    //        {
+    //            Button3.onClick.Invoke();
+    //        }
+
+
+    //    }
+    //}
 
     public void OnButtonPress()
     {

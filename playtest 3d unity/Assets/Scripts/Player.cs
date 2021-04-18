@@ -13,6 +13,7 @@ public class Player : MonoBehaviour {
 	public GameObject LevelsMode;
 	public GameObject EndlessLevel;
 
+
 	private float velocity = 0;
 	public float PlayerVelocity;
 	public float acceleration;
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour {
 	private Transform world, rotater;
 	private bool StartGame = false;
 	public bool GameIsOver = false;
+	private int Cheats = 0;
 
 	private void Start () {
 		world = pipeSystem.transform.parent;
@@ -40,13 +42,17 @@ public class Player : MonoBehaviour {
 	}
 
 	private void Update () {
-		if (Input.GetKey(KeyCode.Space))
-		{
+        //if (Input.GetKeyDown(KeyCode.Space))
+            if ((Input.touchCount > 0) && (Cheats == 0))
+            {
 			StartGame = true;
 			ScoreCounter.gameObject.SetActive(true);
 			TapToStart.gameObject.SetActive(false);
 			LevelsMode.gameObject.SetActive(false);
 			EndlessLevel.gameObject.SetActive(false);
+			Cheats++;
+
+		
 		}
 		if (StartGame == true)
 		{
@@ -69,7 +75,10 @@ public class Player : MonoBehaviour {
 				Quaternion.Euler(0f, 0f, systemRotation);
 			if (RotateOrNot == true)
 				UpdateAvatarRotation();
-			ScoreCounter.GetComponent<Text>().text = "Score: " + ((int)distanceTraveled).ToString() ;
+			ScoreCounter.GetComponent<Text>().text = "Score: " + ((int)distanceTraveled).ToString();
+
+	
+			//Debug.Log(LoadingLevels.GetLevelNumber());
 		}
 	}
 	private void OnTriggerEnter(Collider other)
