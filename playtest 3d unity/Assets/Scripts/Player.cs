@@ -30,7 +30,7 @@ public class Player : MonoBehaviour {
 	private float worldRotation, avatarRotation;
 
 	private Transform world, rotater;
-	private bool StartGame = false;
+	public bool StartGame = false;
 	public bool GameIsOver = false;
 	private int Cheats = 0;
 
@@ -42,18 +42,6 @@ public class Player : MonoBehaviour {
 	}
 
 	private void Update () {
-        //if (Input.GetKeyDown(KeyCode.Space))
-            if ((Input.touchCount > 0) && (Cheats == 0))
-            {
-			StartGame = true;
-			ScoreCounter.gameObject.SetActive(true);
-			TapToStart.gameObject.SetActive(false);
-			LevelsMode.gameObject.SetActive(false);
-			EndlessLevel.gameObject.SetActive(false);
-			Cheats++;
-
-		
-		}
 		if (StartGame == true)
 		{
 			while (PlayerVelocity >= velocity)
@@ -77,8 +65,6 @@ public class Player : MonoBehaviour {
 				UpdateAvatarRotation();
 			ScoreCounter.GetComponent<Text>().text = "Score: " + ((int)distanceTraveled).ToString();
 
-	
-			//Debug.Log(LoadingLevels.GetLevelNumber());
 		}
 	}
 	private void OnTriggerEnter(Collider other)
@@ -101,8 +87,18 @@ public class Player : MonoBehaviour {
 		rotater.localRotation = Quaternion.Euler(avatarRotation, 0f, 0f);
 	}
 
+    public void StartOFGame()
+    {
+        StartGame = true;
+        ScoreCounter.gameObject.SetActive(true);
+        TapToStart.gameObject.SetActive(false);
+        LevelsMode.gameObject.SetActive(false);
+        EndlessLevel.gameObject.SetActive(false);
+        Cheats++;
+    }
 
-	private void SetupCurrentPipe () {
+
+    private void SetupCurrentPipe () {
 		deltaToRotation = 360f / (2f * Mathf.PI * currentPipe.CurveRadius);
 		worldRotation += currentPipe.RelativeRotation;
 		if (worldRotation < 0f) {
@@ -119,10 +115,20 @@ public class Player : MonoBehaviour {
 		return Sphere.GetComponent<Renderer>().material.color;
     }
 
-	public void KillPlayer()
+	public void KillPlayerWin()
 	{
 		velocity = 0;
 		PlayerVelocity = -1;
+		LevelsMode.gameObject.SetActive(true);
+		EndlessLevel.gameObject.SetActive(true);
+		GameIsOver = true;
+		RotateOrNot = false;
+	}
+
+	public void KillPlayerLose()
+	{
+		velocity = 0;
+		PlayerVelocity = -2;
 		LevelsMode.gameObject.SetActive(true);
 		EndlessLevel.gameObject.SetActive(true);
 		GameIsOver = true;

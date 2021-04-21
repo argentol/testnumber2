@@ -237,7 +237,7 @@ public class PipeSystem : MonoBehaviour {
 		{
 			if (pipes[1].GetComponent<Renderer>().material.color != Player.GetSphereMaterialColor())
 			{
-				Player.KillPlayer();
+				Player.KillPlayerLose();
 				RemoveButtons();
 				RestartButton.gameObject.SetActive(true);
 			}
@@ -256,7 +256,7 @@ public class PipeSystem : MonoBehaviour {
         {
 			SaveSystem.UpdateLevel();
 			TextWin.gameObject.SetActive(true);
-			Player.KillPlayer();
+			Player.KillPlayerWin();
 			RemoveButtons();
 			NextLevel.gameObject.SetActive(true);
         }
